@@ -12,12 +12,13 @@ class Tree:
         self.sortedContents = []
 
     def __iter__(self):
-        "Necessary for Tree to be iterable"
+        """Necessary for Tree to be iterable"""
         pass
 
     def insert(self, item):
         """Calls the recursive function insertHelper, which adds the new item"""
         self.root = self.insertHelper(self.root, None, item)
+#        find (item) #make this work - only one binary search need exist, that written in find()
 
     def insertHelper(self, current_node, node_parent, item):
         """Adds the new item at the correct spot - does not insert it if it is a duplicate"""
@@ -30,6 +31,28 @@ class Tree:
         elif item > current_node.item:
             current_node.right_child = self.insertHelper(current_node.right_child, self, item)
         return current_node
+
+    def findItem(self, item):
+        """This method returns the node where the item is contained, or raises an exception if it is not found"""
+        found_location = self.__find(item)
+        if found_location.item == item:
+            return found_location
+        else:
+            raise NotFoundError("The item '" + str(item) + "' was not found!")
+
+    def __find(self, item):
+        """This is a find function meant to be used only internally, use findItem for user facing searches"""
+        search_node = self.root
+        search_node = self.__findHelper(search_node, item)
+        return search_node
+
+    def __findHelper(self, search_node, item):
+        """Uses recursion to find node that contains item"""
+        if item < search_node.item and search_node.left_child is not None:
+            search_node = self.__findHelper(search_node.left_child, item)
+        elif item > search_node.item and search_node.right_child is not None:
+            search_node = self.__findHelper(search_node.right_child, item)
+        return search_node
 
     def displayInOrder(self):
         """Displays the elements in the array in order - this method should get replaced when 
@@ -68,10 +91,27 @@ class Tree:
 
         return current_node
 
+
+class TreeIterator:
+    """The stub of an iterator for the Tree class"""
+    def __init__(self, tree=None, item=None):
+        self.tree = tree
+        self.current_node = tree.find(item)
+
+    def __next__(self):
+        pass
+
+
 class Node:
     """This class models a node of a binary tree"""
-    def __init__(self, item = None, node_parent = None):
+    def __init__(self, item=None, node_parent=None):
         self.item = item
         self.parent = node_parent
         self.left_child = None
         self.right_child = None
+
+
+class NotFoundError(Exception):
+    """An exception meant to be thrown when the item is not found by findItem()"""
+    def __init__(self, message):
+        self.message = message
