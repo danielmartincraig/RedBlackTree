@@ -2,10 +2,15 @@
 # Red Black Tree Library
 ###################################
 
+
 class Tree:
     def __init__(self):
         self.root = None
         self.sortedContents = []
+
+    def __iter__(self):
+        "Necessary for Tree to be iterable"
+        pass
 
     def insert(self, item):
         self.root = self.insertHelper(self.root, None, item)
@@ -39,50 +44,19 @@ class Tree:
 
     def begin(self):
         current_node = self.root
-        print("current_node is currently at " + str(current_node.item))
 
         while current_node.left_child is not None:
             current_node = current_node.left_child
-            print("current_node is currently at " + str(current_node.item))
 
-        return TreeIter(current_node)
+        return current_node
 
+    def end(self):
+        current_node = self.root
 
-class TreeIter:
-    def __init__(self, node):
-        self.node = node
+        while current_node.right_child is not None:
+            current_node = current_node.right_child
 
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        # is self.node None?
-        if self.node is None:
-            return self.node
-
-        # does self.node have a right child?  If so, he's the inorder successor
-        if self.node.right_child is not None:
-            self.node = self.node.right_child
-            while self.node.left_child is not None:
-                self.node = self.node.left_child
-            return self.node
-
-        temp = self.node
-        self.node = self.node.parent
-
-        # is self.node the root?
-        if self.node is None:
-            return self.node
-
-        # was self.node a left child?
-        if temp == self.node:
-            return self.node
-
-        while self.node is not None and temp == self.node.right_child:
-            temp = self.node
-            self.node = self.node.parent
-
-        return self.node
+        return current_node
 
 class Node:
     def __init__(self, item = None, node_parent = None):
