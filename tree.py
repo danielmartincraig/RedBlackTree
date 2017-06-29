@@ -17,7 +17,7 @@ class Tree:
 
     def insert(self, item):
         """Calls the recursive function insertHelper, which adds the new item"""
-        self.root = self.insertHelper(self.root, None, item)
+#        self.root = self.insertHelper(self.root, None, item)
 #        find (item) #make this work - only one binary search need exist, that written in find()
 
     def insertHelper(self, current_node, node_parent, item):
@@ -35,7 +35,8 @@ class Tree:
     def findItem(self, item):
         """This method returns the node where the item is contained, or raises an exception if it is not found"""
         found_location = self.__find(item)
-        if found_location.item == item:
+
+        if found_location is not None and found_location.item == item:
             return found_location
         else:
             raise NotFoundError("The item '" + str(item) + "' was not found!")
@@ -43,7 +44,8 @@ class Tree:
     def __find(self, item):
         """This is a find function meant to be used only internally, use findItem for user facing searches"""
         search_node = self.root
-        search_node = self.__findHelper(search_node, item)
+        if self.root is not None:
+            search_node = self.__findHelper(search_node, item)
         return search_node
 
     def __findHelper(self, search_node, item):
@@ -60,10 +62,12 @@ class Tree:
         self.sortedContents = []
         if self.root is not None:
             self.displayInOrderHelper(self.root)
-        print("The tree contains ", end="")
-        for item in self.sortedContents[:-1]:
-            print(item, end=", ")
-        print(self.sortedContents[-1])
+            print("The tree contains ", end="")
+            for item in self.sortedContents[:-1]:
+                print(item, end=", ")
+            print(self.sortedContents[-1])
+        else:
+            print("The tree is empty!")
 
     def displayInOrderHelper(self, current_node):
         """Traverses the tree using an inorder traversal, appending items to a list"""
