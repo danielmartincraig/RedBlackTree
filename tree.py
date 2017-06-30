@@ -1,5 +1,6 @@
 ###################################
-# Red Black Tree Library
+# Red Black Tree
+# Daniel Craig
 ###################################
 
 
