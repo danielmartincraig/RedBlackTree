@@ -17,6 +17,14 @@ class Tree:
 
     def insert(self, item):
         """Calls the recursive function insertHelper, which adds the new item"""
+        insert_location = self.__find(item)
+        if insert_location is None: #No root
+            self.root = Node(item, None)
+        elif item < insert_location.item:
+            insert_location.left_child = Node(item, insert_location)
+        else: # it should be that item >= insert_location.item
+            insert_location.right_child = Node(item, insert_location)
+
 #        self.root = self.insertHelper(self.root, None, item)
 #        find (item) #make this work - only one binary search need exist, that written in find()
 
